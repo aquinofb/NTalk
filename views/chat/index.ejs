@@ -1,0 +1,27 @@
+<% include ../header %>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+	var socket = io('http://localhost:3000');
+	socket.emit('join', '<%- sala %>');
+	socket.on('send-client', function(msg) {
+		document.getElementById('chat').innerHTML += msg;
+	});
+
+	var enviar = function() {
+		var msg = document.getElementById('msg');
+
+		socket.emit('send-server', msg.value);
+		msg.value = "";
+	}
+</script>
+
+<header>
+	NTalk - Chat
+</header>
+<section>
+	<pre id="chat"></pre>
+	<input type="text" id="msg" placeholder="Mensagem" />
+	<button onclick="enviar();">Enviar</button>
+</section>
+<% include ../exit %>
+<% include ../footer %>
